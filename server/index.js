@@ -2,15 +2,10 @@
 import express from 'express';
 
 import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
 import next from 'next';
 
 import compression from 'compression';
 import morgan from 'morgan';
-
-import connectMongo from 'connect-mongo';
-import session from 'express-session';
-
 import api from './routes';
 
 const server = express();
@@ -35,33 +30,6 @@ app.prepare().then(() => {
   // Theseed Custom
   server.use(compression());
   server.use(morgan('dev'));
-
-  // MongoDB
-  // mongoose.set('debug', true);
-  mongoose.Promise = global.Promise;
-  mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true, autoIndex: true });
-  const db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'connection error:'));
-
-  // Session
-  const MongoStore = connectMongo(session);
-  server.use(
-    session({
-      key: SESSION_KEY,
-      secret: SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      rolling: true,
-      cookie: {
-        maxAge: 365 * (24 * 60 * 60 * 1000),
-        domain: dev ? undefined : SESSION_DOMAIN,
-      },
-      store: new MongoStore({
-        mongooseConnection: mongoose.connection,
-        ttl: 365 * (24 * 60 * 60 * 1000),
-      }),
-    }),
-  );
 
   // API routes
   server.use('/api', api);
