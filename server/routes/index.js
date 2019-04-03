@@ -41,7 +41,7 @@ const imgPro = async (baseImg, width = 640, height = undefined, quality = 75) =>
 
 router.get('/screen', async (req, res) => {
   const img = await screen();
-  const resizedImage = await imgPro(img, 1200);
+  const resizedImage = await imgPro(img, 1920, undefined, 80);
   const base64Img = `data:image/jpeg;base64,${Buffer.from(resizedImage).toString('base64')}`;
 
   return res.json({ img: base64Img });

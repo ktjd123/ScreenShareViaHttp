@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import axios from 'axios';
 import { observer, inject } from 'mobx-react';
 import { PageHead, Logo, Image } from '../components';
@@ -8,12 +8,15 @@ import { PageHead, Logo, Image } from '../components';
 class index extends Component {
   @observable image = '';
 
+  @action getImage = () => {
+    axios.get('/api/screen').then((res) => {
+      this.image = res.data.img;
+      this.getImage();
+    });
+  };
+
   componentDidMount = () => {
-    setInterval(() => {
-      axios.get('/api/screen').then((res) => {
-        this.image = res.data.img;
-      });
-    }, 500);
+    this.getImage();
   };
 
   render() {

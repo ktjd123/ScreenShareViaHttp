@@ -87,5 +87,8 @@ app.prepare().then(() => {
     console.log(
       `App running on http://localhost:${PORT}/\nAPI running on http://localhost:${PORT}/api/`,
     );
+    console.log(
+      '웹 브라우져에서 이 PC의 IP를 입력하고 프레젠테이션을 시작하세요 [ipconfig, ifconfig를 통해 확인]',
+    );
   });
 });
