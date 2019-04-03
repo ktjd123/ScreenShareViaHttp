@@ -1,0 +1,15 @@
+.logo {
+  margin: 3vh auto;
+  @include flex-column();
+  z-index: 1000;
+
+  .title {
+    font-size: 4rem;
+    @import url("https://fonts.googleapis.com/css?family=Major+Mono+Display");
+    font-family: "Major Mono Display", monospace;
+  }
+  .description {
+    margin-top: 20px;
+    font-size: 3rem;
+  }
+}

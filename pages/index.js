@@ -1,29 +1,30 @@
 import React, { Component } from 'react';
-import Link from 'next/link';
-import { PageHead } from '../components';
-import Default from '../components/Default';
-import Default2 from '../components/Default2';
+import { observable, action } from 'mobx';
+import axios from 'axios';
+import { observer, inject } from 'mobx-react';
+import { PageHead, Logo, Image } from '../components';
 
+@observer
 class index extends Component {
-  static getInitialProps = async () => ({ o: 'hi' });
+  @observable image = '';
+
+  componentDidMount = () => {
+    setInterval(() => {
+      axios.get('/api/screen').then((res) => {
+        this.image = res.data.img;
+      });
+    }, 500);
+  };
 
   render() {
+    const { image } = this;
     return (
       <div>
-        <PageHead title="index page" description="this is index page" />
-        <Default />
-        <Default2 />
-        <Link prefetch as="/about/peter" href="/about?id=peter">
-          Peter에 대하여
-        </Link>
-        <Link href="/about">About</Link>
-
-        <Link href="/oejsifjesofoes">to 404</Link>
-
-        {JSON.stringify(this.props)}
+        <PageHead title="발표" description="this is index page" />
+        <Logo />
+        <Image image={image} />
       </div>
     );
   }
 }
-
 export default index;
